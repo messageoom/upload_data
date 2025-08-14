@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件上传服务</title>
+    <style>
+        /* Previous CSS unchanged, included for completeness */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+        
+        .main-content {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        .upload-section {
+            padding: 30px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .file-input-container {
+            margin: 25px 0;
+            padding: 30px;
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background-color: #fafafa;
+        }
+        
+        .file-input-container:hover {
+            border-color: #667eea;
+            background-color: #f0f4ff;
+        }
+        
+        .file-input-container label {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .file-input {
+            margin: 15px 0;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            width: 100%;
+            font-size: 1rem;
+            background-color: white;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-top: 10px;
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+        
+        .upload-btn:active {
+            transform: translateY(0);
+        }
+        
+        .message {
+            padding: 15px 20px;
+            margin: 20px auto;
+            border-radius: 8px;
+            max-width: 90%;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .file-list {
+            padding: 30px;
+        }
+        
+        .file-list h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            position: relative;
+        }
+        
+        .file-list h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+        
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .file-item {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .file-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .file-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .file-name {
+            display: block;
+            padding: 10px 5px;
+            font-size: 0.85rem;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background-color: #f9f9f9;
+        }
+        
+        .show-more-btn, .show-less-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .show-more-btn:hover, .show-less-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            header {
+                padding: 15px 10px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .upload-section {
+                padding: 20px 15px;
+            }
+            
+            .file-input-container {
+                padding: 20px 15px;
+                margin: 20px 0;
+            }
+            
+            .file-input-container label {
+                font-size: 1rem;
+            }
+            
+            .file-input {
+                padding: 10px 15px;
+                font-size: 0.95rem;
+            }
+            
+            .upload-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .file-list {
+                padding: 20px 15px;
+            }
+            
+            .file-list h2 {
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+            }
+            
+            .files-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 15px;
+            }
+            
+            .file-item img {
+                height: 120px;
+            }
+            
+            .file-name {
+                font-size: 0.75rem;
+                padding: 8px 5px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 5px;
+            }
+            
+            header {
+                padding: 12px 8px;
+            }
+            
+            h1 {
+                font-size: 1.3rem;
+            }
+            
+            .upload-section {
+                padding: 15px 10px;
+            }
+            
+            .file-input-container {
+                padding: 15px 10px;
+                margin: 15px 0;
+            }
+            
+            .file-input-container label {
+                font-size: 0.9rem;
+            }
+            
+            .file-input {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .upload-btn {
+                padding: 10px 20px;
+                font-size: 0.95rem;
+            }
+            
+            .files-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 10px;
+            }
+            
+            .file-item img {
+                height: 100px;
+            }
+            
+            .file-name {
+                font-size: 0.7rem;
+                padding: 6px 3px;
+            }
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📁 文件上传服务</h1>
+        </header>
+        
+        <div class="main-content">
+            <div class="upload-section">
+                <!-- 显示消息 -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="message {{ category }}">
+                                {{ '✅' if category == 'success' else '❌' }} {{ message | e }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <!-- 上传表单 -->
+                <div class="file-input-container">
+                    <form method="post" enctype="multipart/form-data" id="uploadForm">
+                        <label for="file">选择文件</label>
+                        <input type="file" name="file" id="file" class="file-input" accept="*/*" required>
+                        <br>
+                        <button type="submit" class="upload-btn" id="uploadBtn">
+                            <span id="buttonText">📤 上传文件</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 显示已上传的文件 -->
+            <div class="file-list">
+                <h2>📁 已上传的文件</h2>
+                
+                <!-- 图片文件 -->
+                {% if file_categories.images %}
+                <h3>🖼️ 图片文件</h3>
+                <div class="files-grid" id="images-grid">
+                    {% for file in file_categories.images[:3] %}
+                        <div class="file-item">
+                            <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
+                                <img src="{{ url_for('uploaded_file', filename=file) | e }}" alt="{{ file | e }}">
+                                <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if file_categories.images|length > 3 %}
+                <div style="text-align: center; margin: 15px 0;">
+                    <button class="show-more-btn" data-category="images" data-files='{{ file_categories.images | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.images|length - 3 }})</button>
+                    <button class="show-less-btn" data-category="images" data-files='{{ file_categories.images | tojson | safe }}' style="display: none;">︿ 收起</button>
+                </div>
+                {% endif %}
+                {% endif %}
+                
+                <!-- 文档文件 -->
+                {% if file_categories.documents %}
+                <h3>📄 文档文件</h3>
+                <div class="files-grid" id="documents-grid">
+                    {% for file in file_categories.documents[:3] %}
+                        <div class="file-item">
+                            <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
+                                <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #f0f8ff;">
+                                    <span style="font-size: 3rem;">📄</span>
+                                </div>
+                                <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if file_categories.documents|length > 3 %}
+                <div style="text-align: center; margin: 15px 0;">
+                    <button class="show-more-btn" data-category="documents" data-files='{{ file_categories.documents | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.documents|length - 3 }})</button>
+                    <button class="show-less-btn" data-category="documents" data-files='{{ file_categories.documents | tojson | safe }}' style="display: none;">︿ 收起</button>
+                </div>
+                {% endif %}
+                {% endif %}
+                
+                <!-- 数据文件 -->
+                {% if file_categories.data %}
+                <h3>📊 数据文件</h3>
+                <div class="files-grid" id="data-grid">
+                    {% for file in file_categories.data[:3] %}
+                        <div class="file-item">
+                            <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
+                                <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #fff8dc;">
+                                    <span style="font-size: 3rem;">📊</span>
+                                </div>
+                                <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if file_categories.data|length > 3 %}
+                <div style="text-align: center; margin: 15px 0;">
+                    <button class="show-more-btn" data-category="data" data-files='{{ file_categories.data | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.data|length - 3 }})</button>
+                    <button class="show-less-btn" data-category="data" data-files='{{ file_categories.data | tojson | safe }}' style="display: none;">︿ 收起</button>
+                </div>
+                {% endif %}
+                {% endif %}
+                
+                <!-- 压缩文件 -->
+                {% if file_categories.archives %}
+                <h3>📦 压缩文件</h3>
+                <div class="files-grid" id="archives-grid">
+                    {% for file in file_categories.archives[:3] %}
+                        <div class="file-item">
+                            <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
+                                <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #f5f5f5;">
+                                    <span style="font-size: 3rem;">📦</span>
+                                </div>
+                                <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if file_categories.archives|length > 3 %}
+                <div style="text-align: center; margin: 15px 0;">
+                    <button class="show-more-btn" data-category="archives" data-files='{{ file_categories.archives | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.archives|length - 3 }})</button>
+                    <button class="show-less-btn" data-category="archives" data-files='{{ file_categories.archives | tojson | safe }}' style="display: none;">︿ 收起</button>
+                </div>
+                {% endif %}
+                {% endif %}
+                
+                <!-- 媒体文件 -->
+                {% if file_categories.media %}
+                <h3>🎵 媒体文件</h3>
+                <div class="files-grid" id="media-grid">
+                    {% for file in file_categories.media[:3] %}
+                        <div class="file-item">
+                            <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
+                                <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #ffe4e1;">
+                                    <span style="font-size: 3rem;">🎵</span>
+                                </div>
+                                <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if file_categories.media|length > 3 %}
+                <div style="text-align: center; margin: 15px 0;">
+                    <button class="show-more-btn" data-category="media" data-files='{{ file_categories.media | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.media|length - 3 }})</button>
+                    <button class="show-less-btn" data-category="media" data-files='{{ file_categories.media | tojson | safe }}' style="display: none;">︿ 收起</button>
+                </div>
+                {% endif %}
+                {% endif %}
+                
+                <!-- 其他文件 -->
+                {% if file_categories.others %}
+                <h3>📁 其他文件</h3>
+                <div class="files-grid" id="others-grid">
+                    {% for file in file_categories.others[:3] %}
+                        <div class="file-item">
+                            <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
+                                <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #f9f9f9;">
+                                    <span style="font-size: 3rem;">📁</span>
+                                </div>
+                                <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if file_categories.others|length > 3 %}
+                <div style="text-align: center; margin: 15px 0;">
+                    <button class="show-more-btn" data-category="others" data-files='{{ file_categories.others | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.others|length - 3 }})</button>
+                    <button class="show-less-btn" data-category="others" data-files='{{ file_categories.others | tojson | safe }}' style="display: none;">︿ 收起</button>
+                </div>
+                {% endif %}
+                {% endif %}
+                
+                <!-- 如果没有文件 -->
+                {% if not file_categories.images and not file_categories.documents and not file_categories.data and not file_categories.archives and not file_categories.media and not file_categories.others %}
+                    <p style="text-align: center; color: #888; font-size: 1.1rem; padding: 30px;">📭 暂无上传的文件</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <footer>
+            <p>局域网文件上传服务 &copy; 2025</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Template for generating file URLs
+        const uploadUrlTemplate = '{{ url_for("uploaded_file", filename="PLACEHOLDER") }}';
+
+        // Utility function to escape HTML to prevent XSS
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+        
+        // Handle form submission to show loading state
+        document.getElementById('uploadForm').addEventListener('submit', function() {
+            const button = document.getElementById('uploadBtn');
+            const buttonText = document.getElementById('buttonText');
+            buttonText.innerHTML = '<span class="loading"></span> 上传中...';
+            button.disabled = true;
+        });
+        
+        // Update label with selected file name
+        document.getElementById('file').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : '';
+            const label = document.querySelector('.file-input-container label');
+            label.textContent = fileName ? `已选择: ${escapeHTML(fileName)}` : '选择文件';
+        });
+        
+        // Render files for a given category
+        function renderFiles(category, files, grid) {
+            grid.innerHTML = '';
+            files.forEach(file => {
+                const encodedFile = encodeURIComponent(file);
+                const fileUrl = uploadUrlTemplate.replace('PLACEHOLDER', encodedFile);
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                
+                if (category === 'images') {
+                    fileItem.innerHTML = `
+                        <a href="${fileUrl}" target="_blank">
+                            <img src="${fileUrl}" alt="${escapeHTML(file)}">
+                            <span class="file-name">${escapeHTML(file.length > 15 ? file.substring(0, 15) + '...' : file)}</span>
+                        </a>
+                    `;
+                } else {
+                    const config = {
+                        documents: { icon: '📄', bgColor: '#f0f8ff' },
+                        data: { icon: '📊', bgColor: '#fff8dc' },
+                        archives: { icon: '📦', bgColor: '#f5f5f5' },
+                        media: { icon: '🎵', bgColor: '#ffe4e1' },
+                        others: { icon: '📁', bgColor: '#f9f9f9' }
+                    };
+                    const { icon, bgColor } = config[category] || config.others;
+                    fileItem.innerHTML = `
+                        <a href="${fileUrl}" target="_blank">
+                            <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: ${bgColor};">
+                                <span style="font-size: 3rem;">${icon}</span>
+                            </div>
+                            <span class="file-name">${escapeHTML(file.length > 15 ? file.substring(0, 15) + '...' : file)}</span>
+                        </a>
+                    `;
+                }
+                grid.appendChild(fileItem);
+            });
+        }
+        
+        // Show all files for a category
+        function showAllFiles(category, files) {
+            try {
+                console.log(`showAllFiles called for category: ${category}, files:`, files);
+                const grid = document.getElementById(category + '-grid');
+                if (!grid) {
+                    console.error(`Grid element not found for category: ${category}`);
+                    return;
+                }
+                if (!Array.isArray(files)) {
+                    console.error(`Files is not an array for category: ${category}`, files);
+                    return;
+                }
+                renderFiles(category, files, grid);
+                const container = grid.parentNode;
+                const showMoreBtn = container.querySelector('.show-more-btn');
+                const showLessBtn = container.querySelector('.show-less-btn');
+                if (showMoreBtn) showMoreBtn.style.display = 'none';
+                if (showLessBtn) showLessBtn.style.display = 'inline-block';
+            } catch (error) {
+                console.error(`Error in showAllFiles for category ${category}:`, error);
+                const grid = document.getElementById(category + '-grid');
+                if (grid) {
+                    grid.innerHTML = '<p style="color: red; text-align: center;">加载文件列表失败，请稍后重试。</p>';
+                }
+            }
+        }
+        
+        // Show only the first 3 files for a category
+        function showLessFiles(category, files) {
+            try {
+                console.log(`showLessFiles called for category: ${category}, files:`, files);
+                const grid = document.getElementById(category + '-grid');
+                if (!grid) {
+                    console.error(`Grid element not found for category: ${category}`);
+                    return;
+                }
+                if (!Array.isArray(files)) {
+                    console.error(`Files is not an array for category: ${category}`, files);
+                    return;
+                }
+                const limitedFiles = files.slice(0, 3);
+                renderFiles(category, limitedFiles, grid);
+                const container = grid.parentNode;
+                const showMoreBtn = container.querySelector('.show-more-btn');
+                const showLessBtn = container.querySelector('.show-less-btn');
+                if (showMoreBtn) showMoreBtn.style.display = 'inline-block';
+                if (showLessBtn) showLessBtn.style.display = 'none';
+            } catch (error) {
+                console.error(`Error in showLessFiles for category ${category}:`, error);
+                const grid = document.getElementById(category + '-grid');
+                if (grid) {
+                    grid.innerHTML = '<p style="color: red; text-align: center;">加载文件列表失败，请稍后重试。</p>';
+                }
+            }
+        }
+
+        // Attach event listeners to buttons
+        document.querySelectorAll('.show-more-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.getAttribute('data-category');
+                let files;
+                try {
+                    files = JSON.parse(button.getAttribute('data-files'));
+                } catch (error) {
+                    console.error(`Failed to parse files for category ${category}:`, error);
+                    return;
+                }
+                showAllFiles(category, files);
+            });
+        });
+
+        document.querySelectorAll('.show-less-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.getAttribute('data-category');
+                let files;
+                try {
+                    files = JSON.parse(button.getAttribute('data-files'));
+                } catch (error) {
+                    console.error(`Failed to parse files for category ${category}:`, error);
+                    return;
+                }
+                showLessFiles(category, files);
+            });
+        });
+    </script>
+</body>
+</html>
