@@ -14,9 +14,11 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #333;
             line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px 0;
         }
         
         .container {
@@ -28,83 +30,148 @@
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
-            border-radius: 10px 10px 0 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
         }
         
         h1 {
-            font-size: 1.8rem;
-            font-weight: 500;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin: 0;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
         .main-content {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
             overflow: hidden;
+            backdrop-filter: blur(10px);
             margin-top: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
         }
         
         .upload-section {
-            padding: 30px;
+            padding: 40px;
             text-align: center;
             border-bottom: 1px solid #eee;
         }
         
         .file-input-container {
-            margin: 25px 0;
-            padding: 30px;
-            border: 2px dashed #ddd;
-            border-radius: 10px;
+            margin: 30px auto;
+            padding: 40px;
+            border: 3px dashed #667eea;
+            border-radius: 15px;
             transition: all 0.3s ease;
-            background-color: #fafafa;
+            background: linear-gradient(135deg, #f8f9ff 0%, #eef1ff 100%);
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .file-input-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.05) 25%, transparent 25%, transparent 50%, rgba(102, 126, 234, 0.05) 50%, rgba(102, 126, 234, 0.05) 75%, transparent 75%, transparent);
+            background-size: 20px 20px;
+            z-index: 0;
         }
         
         .file-input-container:hover {
-            border-color: #667eea;
-            background-color: #f0f4ff;
+            border-color: #764ba2;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6e9ff 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
         }
         
         .file-input-container label {
             display: block;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
             color: #555;
+            font-weight: 500;
+            position: relative;
         }
         
         .file-input {
-            margin: 15px 0;
-            padding: 12px 20px;
-            border: 1px solid #ddd;
-            border-radius: 25px;
+            margin: 20px 0;
+            padding: 15px 25px;
+            border: 2px solid #667eea;
+            border-radius: 30px;
             width: 100%;
-            font-size: 1rem;
+            font-size: 1.1rem;
             background-color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .file-input:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
         }
         
         .upload-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 14px 30px;
+            padding: 16px 35px;
             border: none;
-            border-radius: 25px;
+            border-radius: 30px;
             cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 500;
+            font-size: 1.2rem;
+            font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-top: 10px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
         }
         
         .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
         
         .upload-btn:active {
-            transform: translateY(0);
+            transform: translateY(-1px);
+        }
+        
+        .upload-btn::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20px;
+            height: 200%;
+            background: rgba(255,255,255,0.3);
+            transform: rotate(25deg);
+            transition: all 0.6s;
+        }
+        
+        .upload-btn:hover::after {
+            left: 120%;
         }
         
         .message {
@@ -134,64 +201,93 @@
         }
         
         .file-list {
-            padding: 30px;
+            padding: 40px;
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f9ff 100%);
         }
         
         .file-list h2 {
             color: #333;
             text-align: center;
-            margin-bottom: 25px;
-            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
             position: relative;
+            font-weight: 600;
         }
         
         .file-list h2::after {
             content: '';
             display: block;
-            width: 50px;
-            height: 3px;
+            width: 60px;
+            height: 4px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 10px auto;
+            margin: 12px auto;
             border-radius: 2px;
+        }
+        
+        .category-section {
+            margin-bottom: 40px;
+        }
+        
+        .category-section h3 {
+            color: #555;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            align-items: center;
+        }
+        
+        .category-section h3::before {
+            margin-right: 10px;
         }
         
         .files-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 25px;
             margin-top: 20px;
         }
         
         .file-item {
             background: #fff;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             text-align: center;
+            position: relative;
         }
         
         .file-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
         }
         
         .file-item img {
             width: 100%;
-            height: 150px;
+            height: 160px;
             object-fit: cover;
             display: block;
+            border-bottom: 1px solid #eee;
         }
         
         .file-name {
             display: block;
-            padding: 10px 5px;
-            font-size: 0.85rem;
-            color: #666;
+            padding: 12px 8px;
+            font-size: 0.9rem;
+            color: #555;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            background-color: #f9f9f9;
+            background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+            font-weight: 500;
+        }
+        
+        .file-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
         
         .show-more-btn, .show-less-btn {
@@ -370,8 +466,15 @@
                 <!-- 上传表单 -->
                 <div class="file-input-container">
                     <form method="post" enctype="multipart/form-data" id="uploadForm">
-                        <label for="file">选择文件</label>
-                        <input type="file" name="file" id="file" class="file-input" accept="*/*" required>
+                        <label for="file">选择文件（最多9个）</label>
+                        <input type="file" name="files" id="file" class="file-input" accept="*/*" multiple required>
+                        <div id="file-count" style="margin-top: 10px; color: #666; font-size: 0.9rem;"></div>
+                        <div id="progress-container" style="display: none; margin-top: 20px;">
+                            <div style="background-color: #f0f0f0; border-radius: 10px; overflow: hidden;">
+                                <div id="progress-bar" style="height: 20px; background: linear-gradient(90deg, #667eea, #764ba2); width: 0%; transition: width 0.3s ease;"></div>
+                            </div>
+                            <div id="progress-text" style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: #666;">0%</div>
+                        </div>
                         <br>
                         <button type="submit" class="upload-btn" id="uploadBtn">
                             <span id="buttonText">📤 上传文件</span>
@@ -386,138 +489,150 @@
                 
                 <!-- 图片文件 -->
                 {% if file_categories.images %}
-                <h3>🖼️ 图片文件</h3>
-                <div class="files-grid" id="images-grid">
-                    {% for file in file_categories.images[:3] %}
-                        <div class="file-item">
-                            <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
-                                <img src="{{ url_for('uploaded_file', filename=file) | e }}" alt="{{ file | e }}">
-                                <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
-                            </a>
-                        </div>
-                    {% endfor %}
+                <div class="category-section">
+                    <h3>🖼️ 图片文件</h3>
+                    <div class="files-grid" id="images-grid">
+                        {% for file in file_categories.images[:3] %}
+                            <div class="file-item">
+                                <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
+                                    <img src="{{ url_for('uploaded_file', filename=file) | e }}" alt="{{ file | e }}">
+                                    <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if file_categories.images|length > 3 %}
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="show-more-btn" data-category="images" data-files='{{ file_categories.images | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.images|length - 3 }})</button>
+                        <button class="show-less-btn" data-category="images" data-files='{{ file_categories.images | tojson | safe }}' style="display: none;">︿ 收起</button>
+                    </div>
+                    {% endif %}
                 </div>
-                {% if file_categories.images|length > 3 %}
-                <div style="text-align: center; margin: 15px 0;">
-                    <button class="show-more-btn" data-category="images" data-files='{{ file_categories.images | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.images|length - 3 }})</button>
-                    <button class="show-less-btn" data-category="images" data-files='{{ file_categories.images | tojson | safe }}' style="display: none;">︿ 收起</button>
-                </div>
-                {% endif %}
                 {% endif %}
                 
                 <!-- 文档文件 -->
                 {% if file_categories.documents %}
-                <h3>📄 文档文件</h3>
-                <div class="files-grid" id="documents-grid">
-                    {% for file in file_categories.documents[:3] %}
-                        <div class="file-item">
-                            <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
-                                <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #f0f8ff;">
-                                    <span style="font-size: 3rem;">📄</span>
-                                </div>
-                                <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
-                            </a>
-                        </div>
-                    {% endfor %}
+                <div class="category-section">
+                    <h3>📄 文档文件</h3>
+                    <div class="files-grid" id="documents-grid">
+                        {% for file in file_categories.documents[:3] %}
+                            <div class="file-item">
+                                <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
+                                    <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #f0f8ff;">
+                                        <span style="font-size: 3rem;">📄</span>
+                                    </div>
+                                    <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if file_categories.documents|length > 3 %}
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="show-more-btn" data-category="documents" data-files='{{ file_categories.documents | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.documents|length - 3 }})</button>
+                        <button class="show-less-btn" data-category="documents" data-files='{{ file_categories.documents | tojson | safe }}' style="display: none;">︿ 收起</button>
+                    </div>
+                    {% endif %}
                 </div>
-                {% if file_categories.documents|length > 3 %}
-                <div style="text-align: center; margin: 15px 0;">
-                    <button class="show-more-btn" data-category="documents" data-files='{{ file_categories.documents | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.documents|length - 3 }})</button>
-                    <button class="show-less-btn" data-category="documents" data-files='{{ file_categories.documents | tojson | safe }}' style="display: none;">︿ 收起</button>
-                </div>
-                {% endif %}
                 {% endif %}
                 
                 <!-- 数据文件 -->
                 {% if file_categories.data %}
-                <h3>📊 数据文件</h3>
-                <div class="files-grid" id="data-grid">
-                    {% for file in file_categories.data[:3] %}
-                        <div class="file-item">
-                            <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
-                                <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #fff8dc;">
-                                    <span style="font-size: 3rem;">📊</span>
-                                </div>
-                                <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
-                            </a>
-                        </div>
-                    {% endfor %}
+                <div class="category-section">
+                    <h3>📊 数据文件</h3>
+                    <div class="files-grid" id="data-grid">
+                        {% for file in file_categories.data[:3] %}
+                            <div class="file-item">
+                                <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
+                                    <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #fff8dc;">
+                                        <span style="font-size: 3rem;">📊</span>
+                                    </div>
+                                    <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if file_categories.data|length > 3 %}
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="show-more-btn" data-category="data" data-files='{{ file_categories.data | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.data|length - 3 }})</button>
+                        <button class="show-less-btn" data-category="data" data-files='{{ file_categories.data | tojson | safe }}' style="display: none;">︿ 收起</button>
+                    </div>
+                    {% endif %}
                 </div>
-                {% if file_categories.data|length > 3 %}
-                <div style="text-align: center; margin: 15px 0;">
-                    <button class="show-more-btn" data-category="data" data-files='{{ file_categories.data | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.data|length - 3 }})</button>
-                    <button class="show-less-btn" data-category="data" data-files='{{ file_categories.data | tojson | safe }}' style="display: none;">︿ 收起</button>
-                </div>
-                {% endif %}
                 {% endif %}
                 
                 <!-- 压缩文件 -->
                 {% if file_categories.archives %}
-                <h3>📦 压缩文件</h3>
-                <div class="files-grid" id="archives-grid">
-                    {% for file in file_categories.archives[:3] %}
-                        <div class="file-item">
-                            <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
-                                <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #f5f5f5;">
-                                    <span style="font-size: 3rem;">📦</span>
-                                </div>
-                                <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
-                            </a>
-                        </div>
-                    {% endfor %}
+                <div class="category-section">
+                    <h3>📦 压缩文件</h3>
+                    <div class="files-grid" id="archives-grid">
+                        {% for file in file_categories.archives[:3] %}
+                            <div class="file-item">
+                                <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
+                                    <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #f5f5f5;">
+                                        <span style="font-size: 3rem;">📦</span>
+                                    </div>
+                                    <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if file_categories.archives|length > 3 %}
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="show-more-btn" data-category="archives" data-files='{{ file_categories.archives | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.archives|length - 3 }})</button>
+                        <button class="show-less-btn" data-category="archives" data-files='{{ file_categories.archives | tojson | safe }}' style="display: none;">︿ 收起</button>
+                    </div>
+                    {% endif %}
                 </div>
-                {% if file_categories.archives|length > 3 %}
-                <div style="text-align: center; margin: 15px 0;">
-                    <button class="show-more-btn" data-category="archives" data-files='{{ file_categories.archives | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.archives|length - 3 }})</button>
-                    <button class="show-less-btn" data-category="archives" data-files='{{ file_categories.archives | tojson | safe }}' style="display: none;">︿ 收起</button>
-                </div>
-                {% endif %}
                 {% endif %}
                 
                 <!-- 媒体文件 -->
                 {% if file_categories.media %}
-                <h3>🎵 媒体文件</h3>
-                <div class="files-grid" id="media-grid">
-                    {% for file in file_categories.media[:3] %}
-                        <div class="file-item">
-                            <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
-                                <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #ffe4e1;">
-                                    <span style="font-size: 3rem;">🎵</span>
-                                </div>
-                                <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
-                            </a>
-                        </div>
-                    {% endfor %}
+                <div class="category-section">
+                    <h3>🎵 媒体文件</h3>
+                    <div class="files-grid" id="media-grid">
+                        {% for file in file_categories.media[:3] %}
+                            <div class="file-item">
+                                <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
+                                    <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #ffe4e1;">
+                                        <span style="font-size: 3rem;">🎵</span>
+                                    </div>
+                                    <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if file_categories.media|length > 3 %}
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="show-more-btn" data-category="media" data-files='{{ file_categories.media | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.media|length - 3 }})</button>
+                        <button class="show-less-btn" data-category="media" data-files='{{ file_categories.media | tojson | safe }}' style="display: none;">︿ 收起</button>
+                    </div>
+                    {% endif %}
                 </div>
-                {% if file_categories.media|length > 3 %}
-                <div style="text-align: center; margin: 15px 0;">
-                    <button class="show-more-btn" data-category="media" data-files='{{ file_categories.media | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.media|length - 3 }})</button>
-                    <button class="show-less-btn" data-category="media" data-files='{{ file_categories.media | tojson | safe }}' style="display: none;">︿ 收起</button>
-                </div>
-                {% endif %}
                 {% endif %}
                 
                 <!-- 其他文件 -->
                 {% if file_categories.others %}
-                <h3>📁 其他文件</h3>
-                <div class="files-grid" id="others-grid">
-                    {% for file in file_categories.others[:3] %}
-                        <div class="file-item">
-                            <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
-                                <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #f9f9f9;">
-                                    <span style="font-size: 3rem;">📁</span>
-                                </div>
-                                <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
-                            </a>
-                        </div>
-                    {% endfor %}
+                <div class="category-section">
+                    <h3>📁 其他文件</h3>
+                    <div class="files-grid" id="others-grid">
+                        {% for file in file_categories.others[:3] %}
+                            <div class="file-item">
+                                <a href="{{ url_for('uploaded_file', filename=file) | e }}" target="_blank">
+                                    <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: #f9f9f9;">
+                                        <span style="font-size: 3rem;">📁</span>
+                                    </div>
+                                    <span class="file-name">{{ file[:15] | e }}{% if file|length > 15 %}...{% endif %}</span>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if file_categories.others|length > 3 %}
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="show-more-btn" data-category="others" data-files='{{ file_categories.others | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.others|length - 3 }})</button>
+                        <button class="show-less-btn" data-category="others" data-files='{{ file_categories.others | tojson | safe }}' style="display: none;">︿ 收起</button>
+                    </div>
+                    {% endif %}
                 </div>
-                {% if file_categories.others|length > 3 %}
-                <div style="text-align: center; margin: 15px 0;">
-                    <button class="show-more-btn" data-category="others" data-files='{{ file_categories.others | tojson | safe }}'>﹀ 展示更多 ({{ file_categories.others|length - 3 }})</button>
-                    <button class="show-less-btn" data-category="others" data-files='{{ file_categories.others | tojson | safe }}' style="display: none;">︿ 收起</button>
-                </div>
-                {% endif %}
                 {% endif %}
                 
                 <!-- 如果没有文件 -->
@@ -543,19 +658,106 @@
             return div.innerHTML;
         }
         
-        // Handle form submission to show loading state
-        document.getElementById('uploadForm').addEventListener('submit', function() {
+        // Handle form submission to show loading state and progress
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // 阻止默认提交行为
+            
+            const fileInput = document.getElementById('file');
+            const files = fileInput.files;
+            
+            if (files.length === 0) {
+                alert('请选择至少一个文件');
+                return;
+            }
+            
+            if (files.length > 9) {
+                alert('最多只能选择9个文件');
+                return;
+            }
+            
+            // 显示进度条
+            const progressContainer = document.getElementById('progress-container');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
             const button = document.getElementById('uploadBtn');
             const buttonText = document.getElementById('buttonText');
+            
+            progressContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
             buttonText.innerHTML = '<span class="loading"></span> 上传中...';
             button.disabled = true;
+            
+            // 使用FormData上传文件
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+            
+            // 创建XMLHttpRequest对象
+            const xhr = new XMLHttpRequest();
+            
+            // 监听上传进度
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    const percentComplete = Math.round((e.loaded / e.total) * 100);
+                    progressBar.style.width = percentComplete + '%';
+                    progressText.textContent = percentComplete + '%';
+                }
+            });
+            
+            // 监听上传完成
+            xhr.addEventListener('load', function() {
+                if (xhr.status === 200) {
+                    // 上传成功
+                    progressBar.style.width = '100%';
+                    progressText.textContent = '100%';
+                    setTimeout(function() {
+                        location.reload(); // 重新加载页面以显示上传的文件
+                    }, 500);
+                } else {
+                    // 上传失败
+                    alert('上传失败，请重试');
+                    progressContainer.style.display = 'none';
+                    buttonText.innerHTML = '📤 上传文件';
+                    button.disabled = false;
+                }
+            });
+            
+            // 监听上传错误
+            xhr.addEventListener('error', function() {
+                alert('上传出错，请重试');
+                progressContainer.style.display = 'none';
+                buttonText.innerHTML = '📤 上传文件';
+                button.disabled = false;
+            });
+            
+            // 发送请求
+            xhr.open('POST', '/', true);
+            xhr.send(formData);
         });
         
-        // Update label with selected file name
+        // Update label with selected file name and count
         document.getElementById('file').addEventListener('change', function(e) {
-            const fileName = e.target.files[0] ? e.target.files[0].name : '';
+            const files = e.target.files;
             const label = document.querySelector('.file-input-container label');
-            label.textContent = fileName ? `已选择: ${escapeHTML(fileName)}` : '选择文件';
+            const fileCount = document.getElementById('file-count');
+            
+            if (files.length === 0) {
+                label.textContent = '选择文件（最多9个）';
+                fileCount.textContent = '';
+            } else if (files.length > 9) {
+                // 如果选择的文件超过9个，阻止选择并提示用户
+                alert('最多只能选择9个文件，请重新选择！');
+                // 清空文件选择
+                e.target.value = '';
+                label.textContent = '选择文件（最多9个）';
+                fileCount.textContent = '';
+            } else {
+                label.textContent = `已选择 ${files.length} 个文件`;
+                fileCount.textContent = `共 ${files.length} 个文件`;
+                fileCount.style.color = '#666';
+            }
         });
         
         // Render files for a given category
